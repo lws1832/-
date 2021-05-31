@@ -6,6 +6,9 @@
     #ffe812 노랑
     #000000 검정
 */
+ul,li{
+    list-style: none;
+}
 .layerPopup{
     display: none;
     position: fixed;
@@ -29,7 +32,29 @@
     top: 50%;
     transform: translate(-50%,-50%);
 }
-
+.join_layerPopup{
+    display: none;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #0000002f;
+}
+.join_layerPopup.open{
+    display: block;
+}
+.join_popup{
+    width: 300px;
+    height: 600px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    padding: 0 50px 50px 50px;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
 #loginForm > h2{
     margin-top: 20px;
 }
@@ -50,6 +75,15 @@
     cursor: pointer;
     border-radius: 15px;
 }
+.joinSubmit{
+    width: 100%;
+    height: 30px;
+    border:1px solid #ffe812;
+    background: #fff;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 15px;
+}
 #loginForm >.loginSubmit.kakao{
     background: #ffe812;
 }
@@ -63,4 +97,30 @@
     float: right;
     color: blue;
     cursor: pointer;
+}
+.join{
+    cursor: pointer;
+}
+.form > li > input{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 14px;
+    margin-top: 10px;
+    border: 1px solid darkgreen;
+}
+.form{
+    margin-top: 5px;
+}
+h2{
+    text-align: center;
+}
+h3{
+    font-size: 12px;
+}
+#gender{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 14px;
+    margin-top: 10px;
+    border: 1px solid darkgreen;
 }

@@ -9,8 +9,8 @@ module.exports = (req, res, next)=>{
         return 
     }
 
-    let = AccessToken = ctoken(userid);
-    console.log(AccessToken)
+    // let = AccessToken = ctoken(userid);
+    // console.log(AccessToken)
 
     let [header, payload,sign] = AccessToken.split('.');//점을 기준으로 쪼갠다.
     let signature = getSignature(header,payload)

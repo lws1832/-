@@ -23,16 +23,42 @@
                 <button id="kakaoLogin" class="loginSubmit kakao">카카오 로그인</button>
                 <p class="joinWord">
                     아직도 회원이 아니신가요?
-                   <a href="/info">
-                        <span class="join Btn">회원가입</span>
-                    </a> 
+                    <span class="join Btn" id="join" onclick="join_btn()">회원가입</span>
                 </p>
             </div>
         </div>
-    </div><br/>
-    {{userid}}가입성공 </br>
-    {{username}} 하이
+    </div>
+    <div id="jo">
 
+    </div>
+    <script type="text/javascript">
+        async function join_btn(event) {
+            let url = 'http://localhost:3000/info';
+            let jo = document.querySelector('#jo')
+            await fetch(url)
+                .then(data => {
+                    return data.text();
+                })
+                .then(text => {
+                    jo.innerHTML = text;
+                })
+            const join_layerPopup = document.querySelector('.join_layerPopup')
+            join_layerPopup.classList.add('open')
+
+            const layerPopup = document.querySelector('.layerPopup')
+            layerPopup.classList.remove('open')
+
+            join_layerPopup.addEventListener('click', Close)
+
+        }
+
+
+        function Close(event) {
+            if (event.target == this) {
+                this.classList.remove('open')
+            }
+        }
+    </script>
 </body>
 
 </html>

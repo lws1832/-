@@ -4,10 +4,13 @@ function init() {
     const loginBtn = document.querySelector('#loginBtn');
     const layerPopup = document.querySelector('.layerPopup')
     const localLogin = document.querySelector('#localLogin')
+
     loginBtn.addEventListener('click', loginBtnFn)
     layerPopup.addEventListener('click', popupClose)
     localLogin.addEventListener('click', login)
+
 }
+
 
 function loginBtnFn() {
     const layerPopup = document.querySelector('.layerPopup');
@@ -33,7 +36,6 @@ async function login() {
         userpw.focus();
         return 0;
     }
-
 
     let url = 'http://localhost:3000/auth/local/login';
     let options = {

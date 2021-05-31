@@ -6,6 +6,7 @@ const ctoken = require('./jwt');
 const auth = require('./middleware/auth');
 const bodyparser = require('body-parser');
 const mysql = require('mysql')
+const cc = require('./cc');
 
 app.set('view engine','html');
 nunjucks.configure('views',{
@@ -34,9 +35,10 @@ app.get('/user/info',auth,(req,res)=>{
 app.get('/info',(req,res)=>{
     res.render('info')
 })
-app.post('/info',(req,res)=>{
-    let {userid, userpw, username} = req.body;
-    let sql = `insert into this(userid,userpw,username) values ('${userid}',' ${userpw}',' ${username}')`;
+app.post('/info', (req,res)=>{
+    let {userid, userpw,username,birth,gender,mail,tel} = req.body;
+    let token = cc(userpw);
+    let sql =  `insert into this(userid,userpw,token,username,birth,gender,mail,tel) values ('${userid}',' ${userpw}','${token}','${username}','${birth}','${gender}','${mail}','${tel}')`;
     connection.query(sql,(error,result)=>{
         if(error){
             console.log(error);
@@ -47,24 +49,46 @@ app.post('/info',(req,res)=>{
     res.redirect('/')
     
 })
-app.post('/auth/local/login',(req,res)=>{
+app.post('/auth/local/login',  (req,res)=>{
     let {userid,userpw} = req.body;
     console.log('body req : ',userid,userpw);
     let result ={};
-    if(userid == 'root' && userpw == 'root'){
-        result = {
-            result:true,
-            msg:'로그인 성공했다.'
+    let token = cc(userpw)
+    let sql =  `select * from this where ('${userid}','${token}')`
+    let check = connection.query(sql,(error,result)=>{
+        if(error){
+            console.log(error)
+        }else{
+            console.log(result)
         }
-        let token = ctoken(userid);
-        res.cookie('AccessToken',token,{httpOnly:true,secure:true,})
-
-    }else{
+    })
+    let token2 = ctoken(userid);
+    if(check == null){
         result = {
             result:false,
-            msg:'로그인 실패했다.'
+            msg:'아이디와 패스워드를 확인해주세요'
         }
+    }else{
+        result ={
+            result:true,
+            msg:'로그인 성공했습니다.'
+        }
+        res.cookie('AccessToken',token2,{httpOnly:true,secure:true,})
     }
+    // if(userid == 'root' && userpw == 'root'){
+    //     result = {
+    //         result:true,
+    //         msg:'로그인 성공했다.'
+    //     }
+    //     let token = ctoken(userid);
+    //     res.cookie('AccessToken',token,{httpOnly:true,secure:true,})
+
+    // }else{
+    //     result = {
+    //         result:false,
+    //         msg:'로그인 실패했다.'
+    //     }
+    // }
     res.json(result);
 })
 

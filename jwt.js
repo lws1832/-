@@ -26,5 +26,5 @@ function createToken(userid){
     return jwt;
 }
 
-let token = createToken('userid');
+// let token = createToken('userid');
 module.exports = createToken;
