@@ -1,0 +1,40 @@
+app.post('/auth/local/login',(req,res)=>{
+    let {userid,userpw} = req.body;
+    //비번 암호화
+    let shapw = crypto.createHmac('sha256',Buffer.from(userpw))
+    .digest('base64')
+    .replace('=','')
+    console.log(userid,shapw);
+    let result = {};
+
+    //정보 불러오기
+    let sql = `select * from users where userid='${userid}' and userpw='${shapw}';`
+    connection.query(sql,(error,results)=>{
+        if(error){
+            console.log(error)}
+        else{
+            console.log(results)
+            let dbuserid = results[0].userid;
+            let dbuserpw = results[0].userpw;
+            if(userid==dbuserid && shapw==dbuserpw){
+                // 로그인 성공
+                result = {
+                    result:true,
+                    msg:'로그인에 성공하셨습니다.'
+                }
+        
+                let token = ctoken(userid);
+                res.cookie('AccessToken',token,{httpOnly:true,secure:true,})
+        
+                //token 내용을 
+            } else {
+                // 로그인 실패
+                result = {
+                    result:false,
+                    msg:'아이디와 패스워드를 확인해주세요.'
+                }
+            }
+            res.json(result)
+        }
+    })
+})
